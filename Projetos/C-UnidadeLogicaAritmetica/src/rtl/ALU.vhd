@@ -37,7 +37,7 @@ entity ALU is
 			no:    in STD_LOGIC;                     -- inverte o valor da saída
 			zr:    out STD_LOGIC;                    -- setado se saída igual a zero
 			ng:    out STD_LOGIC;                    -- setado se saída é negativa
-			carry : out std_logic;
+			carry: out STD_LOGIC;			
 			saida: out STD_LOGIC_VECTOR(15 downto 0) -- saída de dados da ALU
 	);
 end entity;
@@ -80,7 +80,7 @@ architecture  rtl OF alu is
 			a   : in STD_LOGIC_VECTOR(15 downto 0);
 			zr   : out STD_LOGIC;
 			ng   : out STD_LOGIC
-    	);
+    );
 	end component;
 
 	component Mux16 is
@@ -94,23 +94,18 @@ architecture  rtl OF alu is
 		);
     end component;
     
-	component left16 is
+    component Xor16 is
         port (
 			a:   in  STD_LOGIC_VECTOR(15 downto 0);
+			b:   in  STD_LOGIC_VECTOR(15 downto 0);
 			q:   out STD_LOGIC_VECTOR(15 downto 0)
         );
-	end component;
-	
-	component right16 is
-        port (
-			a:   in  STD_LOGIC_VECTOR(15 downto 0);
-			q:   out STD_LOGIC_VECTOR(15 downto 0)
-        );
-    end component;
 
-   SIGNAL zxout,zyout,nxout,nyout,andout,adderout,leftout,rightout,muxout,precomp: STD_LOGIC_VECTOR(15 downto 0);
+	end component;
+
+   SIGNAL zxout,zyout,nxout,nyout,andout,adderout,xorout,muxout,precomp: STD_LOGIC_VECTOR(15 downto 0);
    SIGNAL carrout: STD_LOGIC;
-	
+
 begin
 	
 	zeradorX: zerador16
@@ -161,28 +156,22 @@ begin
 		q => adderout,
 		carryout => carry
     );
-
-    leftX: left16
-	port map
-	(
-		a => nxout,
-		q => leftout
-    );
     
-  rightX: right16
+	xorXY: Xor16
 	port map
-	(
+    (
 		a => nxout,
-		q => rightout
-	);
+		b => nyout,
+		q => xorout
+     );
 
 	Mux: Mux16
 	port map
 	(
 		a => andout,
 		b => adderout,
-		c => rightout,
-		d => leftout,
+		c => xorout,
+		d => "0000000000000000",
 		sel => f,
 		q => muxout
 	);

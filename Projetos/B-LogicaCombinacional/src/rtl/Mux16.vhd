@@ -17,7 +17,7 @@ begin
 	with sel select
 		q <= a when "00", -- and
 			b when "01", -- add
-			c when "11", -- right
-			d when others; -- left
+			c when "11", -- xor
+			d when others;
 
 end architecture;

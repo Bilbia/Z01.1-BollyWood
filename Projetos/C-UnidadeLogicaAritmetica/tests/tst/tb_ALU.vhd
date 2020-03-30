@@ -169,19 +169,12 @@ begin
       inZX <= '0'; inNX <= '1'; inZY <= '0'; inNY <= '1'; inF <= "00"; inNO <= '1';
       wait for 200 ps;
       assert(outZR = '0' and outNG = '1' and outSaida= "1111111111111111")  report "Falha em teste: 19" severity error;
-
-      -- Teste: 20 - Testa 5 * 2= 10
-      inX <= "0000000000000101"; inY <= "1111111111111111";
-      inZX <= '0'; inNX <= '0'; inZY <= '0'; inNY <= '0'; inF <= "10"; inNO <= '0';
-      wait for 100 ps;
-      assert(outZR = '0' and outNG = '0' and outSaida= "0000000000001010")  report "Falha em teste: 20, ShiftRight KRL bando de inútil nojeto do krl, tão até parecendo o Guinho! Hashi teria vergonha de vcs!" severity error;
-
-      -- Teste: 21 - Testa 0 * 2 = 0
+      
+      -- Teste: 22 -XOR
       inX <= "0000000000000000"; inY <= "1111111111111111";
-      inZX <= '0'; inNX <= '0'; inZY <= '0'; inNY <= '0'; inF <= "10"; inNO <= '0';
+      inZX <= '0'; inNX <= '0'; inZY <= '0'; inNY <= '0'; inF <= "11"; inNO <= '0';
       wait for 100 ps;
-      assert(outZR = '1' and outNG = '0' and outSaida= "0000000000000000")  report "Falha em teste: 21, ShiftRight KRL bando de inútil nojeto do krl, tão até parecendo o Guinho! Hashi teria vergonha de vcs!" severity error;
-
+      assert(outZR = '0' and outNG = '1' and outSaida= "1111111111111111")  report "Falha em teste: 22, XOR KRL bando de inútil nojento do krl, tão até parecendo o Guinho! Hashi teria vergonha de vcs!" severity error;
     test_runner_cleanup(runner); -- Simulacao acaba aqui
 
   end process;
